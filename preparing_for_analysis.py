@@ -1,4 +1,6 @@
 """
+Author: Jakub Dotlacil
+
 This script takes a json file from the mouse tracking experiment.
 It outputs four files:
 
