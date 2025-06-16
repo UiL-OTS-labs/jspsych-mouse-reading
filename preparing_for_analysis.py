@@ -1,6 +1,4 @@
 """
-Author: Jakub Dotlacil
-
 This script takes a json file from the mouse tracking experiment.
 It outputs four files:
 
@@ -15,8 +13,9 @@ For your analysis you should mainly care about the file ending with _mouseEvents
 
 import json
 import pandas as pd
+import argparse
 import os
-import sys
+from pathlib import Path
 
 
 def _extract_and_create_df(
@@ -97,14 +96,23 @@ def _extract_and_create_df(
                 idx = int(group.loc[group['type'] == 'enter', 'idx'].values[0])
                 t_diff = leave_t - enter_t
 
+                if t_diff < args.cutoff:
+                    continue
+
                 # Copy relevant columns, excluding 'type' and 't'
                 row_data = group.iloc[0].drop(['type', 't']).to_dict()
                 row_data['time'] = t_diff
 
                 if idx > max_reading_idx[trial_index]:
+                    # if the current idx is higher than what was read so far, label it first_pass
                     row_data["reading_measure"] = "first_pass"
                     max_reading_idx[trial_index] = idx
+                elif idx == max_reading_idx[trial_index]:
+                    # if the current idx is as high as what was read so far, label it first_pass_again (happens when people regress and go back to the same word before progressing)
+                    row_data["reading_measure"] = "first_pass_again"
+                    max_reading_idx[trial_index] = idx
                 else:
+                    # otherwise, it's second_pass
                     row_data["reading_measure"] = "second_pass"
                 
                 all_records.append(row_data)
@@ -252,12 +260,13 @@ def create_dataframes_from_json_file(file_path):
     return dataframes
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("To use the file, you have to specify the json file name when calling the script.")
-        print("python preparing_for_analysis.py <json-file-name>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--filename", required=True, type=Path, help="Path to the mouse tracking data")
+    parser.add_argument("--cutoff", default=50, type=int, help="What is the cutoff point (in milliseconds)? Default: 50ms. If the time is below the cutoff, the reading event will be ignored.")
 
-    input_json_file = sys.argv[1]
+    args = parser.parse_args()
+
+    input_json_file = args.filename
 
     base_output_name = os.path.splitext(os.path.basename(input_json_file))[0]
 
