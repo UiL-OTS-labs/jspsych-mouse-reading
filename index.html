@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mouse tracking demo</title>
+
+        <meta charset="UTF-8">
+
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/7.3.3/jspsych.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/7.3.3/plugin-html-keyboard-response.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/7.3.3/plugin-html-button-response.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/7.3.3/plugin-survey-multi-select.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/7.3.3/plugin-survey-text.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/7.3.3/extension-mouse-tracking.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/7.3.3/plugin-fullscreen.js"></script>
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/7.3.3/plugin-call-function.js"></script>
+
+        <!-- Generic jspsych style sheets -->
+        <link href="https://web-experiments.lab.hum.uu.nl/jspsych/7.3.3/jspsych.css" rel="stylesheet" type="text/css"/>
+
+        <!-- Uil OTS libraries -->
+        <script type="module" src="https://web-experiments.lab.hum.uu.nl/jspsych/uil-utils/1.2/jspsych-uil-utils-import.js"></script>
+        <link href="https://web-experiments.lab.hum.uu.nl/jspsych/uil-utils/0.1/fonts.css" rel="stylesheet" type="text/css"/>
+
+        <!-- Uil OTS scripts -->
+        <script src="https://web-experiments.lab.hum.uu.nl/jspsych/uil-utils/1.2/jspsych-plugins/plugin-survey.js"></script>
+        <script src="globals.js"></script>
+        <script src="consent.js"></script>
+        <script src="instructions.js"></script>
+        <script src="stimuli.js"></script>
+        <script src="survey.js"></script>
+        <script src="plugins/custom.js"></script>
+
+        <script type="module" src="main.js"></script>
+        <style>
+            .jspsych-survey-multi-choice-text {
+                text-align: left !important;
+            }
+
+            .reading-text-lower, .reading-text-upper {
+                visibility: hidden; /* hidden until fixation cross is hovered */
+                position: absolute;
+                transform: translate(-50%);
+                text-align: left;
+                top: 30vh;
+                user-select: none;
+            }
+
+            .reading-text-fixation {
+                color: purple;
+                position: absolute;
+                text-align: left;
+                top: 30vh;
+                user-select: none;
+            }
+
+            .reading-text-lower {
+                color: #fff;
+                cursor: pointer;
+            }
+
+            .reading-text-upper {
+                filter: blur(3.5px);
+                pointer-events: none;
+            }
+
+            .reading-text-lower span {
+                /* this increases the word rectangle size on the vertical axis */
+                display: inline-block;
+                line-height: 400%;
+            }
+
+
+            .window {
+                background: #fff;
+                border-radius: 50%;
+                position: absolute;
+                transform: translate(-50%, -50%);
+                box-shadow: #fff 0 0 10px 10px;
+                background-blend-mode: screen;
+                mix-blend-mode: difference;
+                pointer-events: none;
+                display: none;
+                filter: blur(3px);
+            }
+
+            .continue {
+                position: absolute;
+                bottom: 20vh;
+            }
+        </style>
+
+
+    </head>
+    <body></body>
+</html>
